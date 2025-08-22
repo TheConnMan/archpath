@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import { componentData } from './componentData.js';
   
   export let selectedComponents;
   export let currentPhase;
@@ -8,30 +9,6 @@
   export let lastPhaseResult = null;
   
   const dispatch = createEventDispatcher();
-  
-  const componentData = {
-    'web-server': { name: 'Web Server', icon: '🌐' },
-    'app-server': { name: 'App Server', icon: '⚙️' },
-    'lambda': { name: 'Serverless', icon: '⚡' },
-    'database': { name: 'Database', icon: '🗄️' },
-    'cache': { name: 'Cache', icon: '⚡' },
-    'search-engine': { name: 'Search Engine', icon: '🔍' },
-    'file-storage': { name: 'File Storage', icon: '📁' },
-    'cdn': { name: 'CDN', icon: '🌐' },
-    'object-storage': { name: 'Object Storage', icon: '📦' },
-    'load-balancer': { name: 'Load Balancer', icon: '⚖️' },
-    'api-gateway': { name: 'API Gateway', icon: '🚪' },
-    'dns': { name: 'DNS', icon: '🌐' },
-    'message-queue': { name: 'Message Queue', icon: '📬' },
-    'websockets': { name: 'WebSockets', icon: '🔌' },
-    'event-streaming': { name: 'Event Streaming', icon: '🌊' },
-    'monitoring': { name: 'Monitoring', icon: '📊' },
-    'logging': { name: 'Logging', icon: '📝' },
-    'analytics': { name: 'Analytics', icon: '📈' },
-    'auth-service': { name: 'Auth Service', icon: '🔐' },
-    'firewall': { name: 'Firewall', icon: '🛡️' },
-    'encryption': { name: 'Encryption', icon: '🔒' },
-  };
   
   function removeComponent(componentId) {
     dispatch('componentRemove', { componentId });
