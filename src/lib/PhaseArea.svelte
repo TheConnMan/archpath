@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { componentData } from './componentData.js';
+  import { getPhaseDescription } from './gameData.js';
   
   export let selectedComponents;
   export let currentPhase;
@@ -17,32 +18,13 @@
   function submitPhase() {
     dispatch('submitPhase');
   }
-  
-  function getPhaseDescription(phase, companyId) {
-    const descriptions = {
-      netflix: {
-        mvp: "Netflix started as a DVD-by-mail service with basic web functionality. What components did they need to launch their simple catalog and user management system?",
-        scale1: "10M users are now streaming video. What infrastructure is needed to deliver video content reliably at this scale?",
-        scale2: "100M+ users globally, multiple content types. The original architecture is breaking. What's needed for the next level?",
-        enterprise: "230M+ subscribers across 190 countries with AI recommendations. What enterprise-grade components are required?"
-      },
-      slack: {
-        mvp: "Slack needs real-time messaging for small teams. What are the core components for a chat application?",
-        scale1: "10K concurrent users, message history is getting slow. What components help scale real-time messaging?",
-        scale2: "100K+ users, enterprise customers want advanced features. What's needed for the next growth phase?",
-        enterprise: "Millions of users, shared channels across organizations. What enterprise features are required?"
-      }
-    };
-    
-    return descriptions[companyId]?.[phase] || `Choose the right components for ${phase} phase.`;
-  }
 </script>
 
 <div class="space-y-6">
   <!-- Phase Description -->
   <div class="card">
     <h3 class="font-semibold mb-2">Challenge</h3>
-    <p class="text-dark-muted">{getPhaseDescription(currentPhase, company.id)}</p>
+    <p class="text-gray-400">{getPhaseDescription(currentPhase, company.id)}</p>
   </div>
   
   <!-- Selected Components -->

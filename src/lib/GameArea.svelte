@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import ComponentPalette from './ComponentPalette.svelte';
   import PhaseArea from './PhaseArea.svelte';
-  import { calculatePhaseScore, getPhaseHints } from './scoring.js';
+  import { calculatePhaseScore } from './gameData.js';
   
   export let company;
   export let currentPhase;
