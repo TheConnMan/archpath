@@ -5,6 +5,7 @@
   export let currentPhase;
   export let company;
   export let phaseComplete;
+  export let lastPhaseResult = null;
   
   const dispatch = createEventDispatcher();
   
@@ -114,7 +115,45 @@
   </div>
   
   <!-- Feedback (shown after submission) -->
-  {#if phaseComplete}
+  {#if phaseComplete && lastPhaseResult}
+    <div class="card bg-green-900 bg-opacity-20 border-green-500">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-green-400">🎉 Phase Complete!</h3>
+        <div class="text-right">
+          <div class="text-2xl font-bold text-green-400">+{lastPhaseResult.score}</div>
+          <div class="text-sm text-green-300">{lastPhaseResult.completionRate}% completion</div>
+        </div>
+      </div>
+      
+      <!-- Feedback Messages -->
+      <div class="space-y-2 mb-4">
+        {#each lastPhaseResult.feedback as message}
+          <p class="text-green-300 text-sm">{message}</p>
+        {/each}
+      </div>
+      
+      <!-- Score Breakdown -->
+      {#if lastPhaseResult.breakdown && lastPhaseResult.breakdown.length > 0}
+        <details class="text-green-300 text-sm">
+          <summary class="cursor-pointer hover:text-green-200 mb-2">📊 Score Breakdown</summary>
+          <div class="space-y-1 ml-4">
+            {#each lastPhaseResult.breakdown as item}
+              <div class="flex justify-between">
+                <span class="capitalize">{item.component.replace(/-/g, ' ')}: {item.reason}</span>
+                <span class="font-mono {item.points > 0 ? 'text-green-400' : item.points < 0 ? 'text-red-400' : 'text-slate-400'}">
+                  {item.points > 0 ? '+' : ''}{item.points}
+                </span>
+              </div>
+            {/each}
+          </div>
+        </details>
+      {/if}
+      
+      <p class="text-green-300 text-sm mt-4">
+        Moving to the next challenge...
+      </p>
+    </div>
+  {:else if phaseComplete}
     <div class="card bg-green-900 bg-opacity-20 border-green-500">
       <h3 class="font-semibold text-green-400 mb-2">🎉 Phase Complete!</h3>
       <p class="text-green-300">

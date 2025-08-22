@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import ComponentPalette from './ComponentPalette.svelte';
   import PhaseArea from './PhaseArea.svelte';
+  import { calculatePhaseScore, getPhaseHints } from './scoring.js';
   
   export let company;
   export let currentPhase;
@@ -18,6 +19,7 @@
   let selectedComponents = [];
   let score = 0;
   let phaseComplete = false;
+  let lastPhaseResult = null;
   
   function handleComponentSelect(event) {
     const component = event.detail.component;
@@ -32,9 +34,20 @@
   }
   
   function handleSubmitPhase() {
-    // Simple scoring for now - will be enhanced later
-    score += selectedComponents.length * 10;
+    // Calculate score using the proper scoring system
+    const result = calculatePhaseScore(company.id, currentPhase, selectedComponents);
+    score += result.score;
+    lastPhaseResult = result;
     phaseComplete = true;
+    
+    // Save progress to localStorage
+    const progress = {
+      company: company.id,
+      currentPhase,
+      totalScore: score,
+      completedPhases: [currentPhase]
+    };
+    localStorage.setItem('archpath-progress', JSON.stringify(progress));
     
     setTimeout(() => {
       if (phases.findIndex(p => p.id === currentPhase) < phases.length - 1) {
@@ -42,8 +55,9 @@
         currentPhase = phases[currentIndex + 1].id;
         selectedComponents = [];
         phaseComplete = false;
+        lastPhaseResult = null;
       }
-    }, 2000);
+    }, 3000);
   }
   
   function handleBackToMenu() {
@@ -127,6 +141,7 @@
         {currentPhase}
         {company}
         {phaseComplete}
+        {lastPhaseResult}
         on:componentRemove={handleComponentRemove}
         on:submitPhase={handleSubmitPhase}
       />
