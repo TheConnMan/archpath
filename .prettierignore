@@ -1,0 +1,8 @@
+dist/
+node_modules/
+.svelte-kit/
+playwright-report/
+test-results/
+.claude/
+package-lock.json
+*.md
