@@ -7,7 +7,7 @@
 ArchPath is an interactive educational game that teaches system architecture through the real evolution stories of major tech companies. Users learn by making architectural decisions as companies scale from MVP to enterprise.
 
 ### Key Metrics
-- **5 Tech Companies**: Netflix, Slack, Uber, Spotify, Instagram  
+- **5 Tech Companies**: Netflix, Slack, Uber, Spotify, Instagram
 - **21 Components**: Categorized across compute, database, storage, network, messaging, analytics, security
 - **4 Scaling Phases**: MVP → First Scale → Growth Scale → Enterprise
 - **120+ Test Scenarios**: Comprehensive Playwright test coverage
@@ -19,7 +19,7 @@ ArchPath is an interactive educational game that teaches system architecture thr
 
 1. **Real Company Stories**: Based on actual architectural evolution
 2. **Contextual Learning**: Business drivers behind technical decisions
-3. **Progressive Complexity**: Start simple, scale appropriately  
+3. **Progressive Complexity**: Start simple, scale appropriately
 4. **Architectural Reasoning**: Deep explanations of component choices
 
 ## 🏗️ Technical Architecture
@@ -35,7 +35,7 @@ ArchPath is an interactive educational game that teaches system architecture thr
 src/
 ├── lib/
 │   ├── App.svelte              # Main application component
-│   ├── GameView.svelte         # Consolidated game interface  
+│   ├── GameView.svelte         # Consolidated game interface
 │   ├── ComponentPalette.svelte # Component selection UI
 │   ├── componentData.js        # Unified component data
 │   └── gameData.js            # Scoring & architectural rationale
@@ -45,7 +45,7 @@ src/
 
 ### Key Design Decisions
 
-**Component Consolidation**: 
+**Component Consolidation**:
 - Merged `GameArea` + `PhaseArea` → `GameView` (eliminated coordinator complexity)
 - Unified component data in `componentData.js` (eliminated 40+ lines duplication)
 - Simplified scoring system from 276 → 217 lines
@@ -66,7 +66,7 @@ src/
 ```javascript
 {
   id: 'web-server',
-  name: 'Web Server', 
+  name: 'Web Server',
   category: 'compute',
   tooltip: 'Serves static content (HTML, CSS, JS) to users. Examples: nginx, Apache.'
 }
@@ -115,7 +115,7 @@ npm run test:headed # Run tests with browser visible
 
 ### Color Palette (Dark Mode)
 - **Background**: Gray-900 (#111827)
-- **Text**: Gray-100 (#f3f4f6) 
+- **Text**: Gray-100 (#f3f4f6)
 - **Cards**: Gray-800 with gray-700 borders
 - **Success**: Green-400/500 tones
 - **Interactive**: Blue-400/500 accents
@@ -169,7 +169,7 @@ gh-pages -d dist # Deploys to GitHub Pages
 npm run dev          # Start development server (localhost:5173)
 npm install          # Install dependencies
 
-# Building  
+# Building
 npm run build        # Production build
 npm run preview      # Preview production build locally
 
@@ -189,7 +189,7 @@ git push origin main # Push code changes to GitHub
 - **Netflix**: DVD → Streaming → Global video delivery → AI recommendations
 - **Slack**: Team chat → WebSocket scaling → Enterprise features → Global platform
 - **Uber**: Local rideshare → Geographic scaling → Microservices → Global platform
-- **Spotify**: Music streaming → Mobile + ML → Microservices → AI platform  
+- **Spotify**: Music streaming → Mobile + ML → Microservices → AI platform
 - **Instagram**: Photo sharing → Feed scaling → Stories/video → Billions of users
 
 ### Learning Outcomes
