@@ -3,112 +3,101 @@
   
   const dispatch = createEventDispatcher();
   
-  const components = [
-    // Compute
-    { id: 'web-server', name: 'Web Server', category: 'compute', icon: '🌐', color: 'bg-compute' },
-    { id: 'app-server', name: 'App Server', category: 'compute', icon: '⚙️', color: 'bg-compute' },
-    { id: 'lambda', name: 'Serverless', category: 'compute', icon: '⚡', color: 'bg-compute' },
-    
-    // Database
-    { id: 'database', name: 'Database', category: 'database', icon: '🗄️', color: 'bg-database' },
-    { id: 'cache', name: 'Cache', category: 'database', icon: '⚡', color: 'bg-database' },
-    { id: 'search-engine', name: 'Search Engine', category: 'database', icon: '🔍', color: 'bg-database' },
-    
-    // Storage
-    { id: 'file-storage', name: 'File Storage', category: 'storage', icon: '📁', color: 'bg-storage' },
-    { id: 'cdn', name: 'CDN', category: 'storage', icon: '🌐', color: 'bg-storage' },
-    { id: 'object-storage', name: 'Object Storage', category: 'storage', icon: '📦', color: 'bg-storage' },
-    
-    // Networking  
-    { id: 'load-balancer', name: 'Load Balancer', category: 'network', icon: '⚖️', color: 'bg-network' },
-    { id: 'api-gateway', name: 'API Gateway', category: 'network', icon: '🚪', color: 'bg-network' },
-    { id: 'dns', name: 'DNS', category: 'network', icon: '🌐', color: 'bg-network' },
-    
-    // Messaging
-    { id: 'message-queue', name: 'Message Queue', category: 'messaging', icon: '📬', color: 'bg-messaging' },
-    { id: 'websockets', name: 'WebSockets', category: 'messaging', icon: '🔌', color: 'bg-messaging' },
-    { id: 'event-streaming', name: 'Event Streaming', category: 'messaging', icon: '🌊', color: 'bg-messaging' },
-    
-    // Analytics
-    { id: 'monitoring', name: 'Monitoring', category: 'analytics', icon: '📊', color: 'bg-analytics' },
-    { id: 'logging', name: 'Logging', category: 'analytics', icon: '📝', color: 'bg-analytics' },
-    { id: 'analytics', name: 'Analytics', category: 'analytics', icon: '📈', color: 'bg-analytics' },
-    
-    // Security
-    { id: 'auth-service', name: 'Auth Service', category: 'security', icon: '🔐', color: 'bg-security' },
-    { id: 'firewall', name: 'Firewall', category: 'security', icon: '🛡️', color: 'bg-security' },
-    { id: 'encryption', name: 'Encryption', category: 'security', icon: '🔒', color: 'bg-security' },
-  ];
+  let selectedCategory = 'all';
   
   const categories = [
-    { id: 'compute', name: 'Compute', icon: '⚙️' },
-    { id: 'database', name: 'Database', icon: '🗄️' },
-    { id: 'storage', name: 'Storage', icon: '📦' },
-    { id: 'network', name: 'Network', icon: '🌐' },
-    { id: 'messaging', name: 'Messaging', icon: '📬' },
-    { id: 'analytics', name: 'Analytics', icon: '📊' },
-    { id: 'security', name: 'Security', icon: '🔒' },
+    { id: 'all', name: 'All', components: [] },
+    { id: 'compute', name: 'Compute', components: ['web-server', 'app-server', 'lambda'] },
+    { id: 'database', name: 'Database', components: ['database', 'cache', 'search-engine'] },
+    { id: 'storage', name: 'Storage', components: ['file-storage', 'cdn', 'object-storage'] },
+    { id: 'network', name: 'Network', components: ['load-balancer', 'api-gateway', 'dns'] },
+    { id: 'messaging', name: 'Messaging', components: ['message-queue', 'websockets', 'event-streaming'] },
+    { id: 'analytics', name: 'Analytics', components: ['monitoring', 'logging', 'analytics'] },
+    { id: 'security', name: 'Security', components: ['auth-service', 'firewall', 'encryption'] }
   ];
   
-  let selectedCategory = null;
+  const components = [
+    { id: 'web-server', name: 'Web Server', category: 'compute' },
+    { id: 'app-server', name: 'App Server', category: 'compute' },
+    { id: 'lambda', name: 'Serverless', category: 'compute' },
+    { id: 'database', name: 'Database', category: 'database' },
+    { id: 'cache', name: 'Cache', category: 'database' },
+    { id: 'search-engine', name: 'Search Engine', category: 'database' },
+    { id: 'file-storage', name: 'File Storage', category: 'storage' },
+    { id: 'cdn', name: 'CDN', category: 'storage' },
+    { id: 'object-storage', name: 'Object Storage', category: 'storage' },
+    { id: 'load-balancer', name: 'Load Balancer', category: 'network' },
+    { id: 'api-gateway', name: 'API Gateway', category: 'network' },
+    { id: 'dns', name: 'DNS', category: 'network' },
+    { id: 'message-queue', name: 'Message Queue', category: 'messaging' },
+    { id: 'websockets', name: 'WebSockets', category: 'messaging' },
+    { id: 'event-streaming', name: 'Event Streaming', category: 'messaging' },
+    { id: 'monitoring', name: 'Monitoring', category: 'analytics' },
+    { id: 'logging', name: 'Logging', category: 'analytics' },
+    { id: 'analytics', name: 'Analytics', category: 'analytics' },
+    { id: 'auth-service', name: 'Auth Service', category: 'security' },
+    { id: 'firewall', name: 'Firewall', category: 'security' },
+    { id: 'encryption', name: 'Encryption', category: 'security' }
+  ];
   
   function selectComponent(component) {
     dispatch('componentSelect', { component });
   }
   
-  $: filteredComponents = selectedCategory 
-    ? components.filter(c => c.category === selectedCategory)
-    : components;
+  function setCategory(categoryId) {
+    selectedCategory = categoryId;
+  }
+  
+  function getCategoryColor(categoryId) {
+    const colors = {
+      compute: 'border-orange-500 text-orange-400',
+      database: 'border-purple-500 text-purple-400',
+      storage: 'border-green-500 text-green-400',
+      network: 'border-blue-500 text-blue-400',
+      messaging: 'border-red-500 text-red-400',
+      analytics: 'border-emerald-500 text-emerald-400',
+      security: 'border-amber-500 text-amber-400'
+    };
+    return colors[categoryId] || 'border-gray-500 text-gray-400';
+  }
+  
+  $: filteredComponents = selectedCategory === 'all' 
+    ? components 
+    : components.filter(c => c.category === selectedCategory);
 </script>
 
 <div class="card">
-  <h3 class="font-semibold mb-4 flex items-center space-x-2">
-    <span>🧩</span>
-    <span>Components</span>
-  </h3>
+  <h3 class="font-semibold text-lg mb-4 text-gray-100">Components</h3>
   
-  <!-- Category Filter -->
-  <div class="mb-4">
-    <div class="flex flex-wrap gap-2">
-      <button
-        class="text-xs px-2 py-1 rounded transition-colors
-          {selectedCategory === null ? 'bg-blue-600 text-white' : 'bg-dark-bg text-dark-muted hover:text-dark-text'}"
-        on:click={() => selectedCategory = null}
+  <!-- Category Filters -->
+  <div class="flex flex-wrap gap-2 mb-6">
+    {#each categories as category}
+      <button 
+        class="px-3 py-1 rounded-md text-sm transition-colors border {selectedCategory === category.id ? 'bg-gray-700 border-gray-500 text-gray-100' : 'border-gray-600 text-gray-400 hover:border-gray-500'}"
+        on:click={() => setCategory(category.id)}
       >
-        All
+        {category.name}
       </button>
-      {#each categories as category}
-        <button
-          class="text-xs px-2 py-1 rounded transition-colors flex items-center space-x-1
-            {selectedCategory === category.id ? 'bg-blue-600 text-white' : 'bg-dark-bg text-dark-muted hover:text-dark-text'}"
-          on:click={() => selectedCategory = category.id}
-        >
-          <span>{category.icon}</span>
-          <span>{category.name}</span>
-        </button>
-      {/each}
-    </div>
-  </div>
-  
-  <!-- Components Grid -->
-  <div class="space-y-2 max-h-96 overflow-y-auto">
-    {#each filteredComponents as component}
-      <div
-        class="component-chip {component.color} text-white border-white cursor-pointer"
-        on:click={() => selectComponent(component)}
-        on:keydown={(e) => e.key === 'Enter' && selectComponent(component)}
-        role="button"
-        tabindex="0"
-      >
-        <div class="flex items-center space-x-2">
-          <span>{component.icon}</span>
-          <span>{component.name}</span>
-        </div>
-      </div>
     {/each}
   </div>
   
-  <div class="mt-4 text-xs text-dark-muted">
-    💡 Click components to add them to the current phase
+  <!-- Components Grid -->
+  <div class="grid grid-cols-1 gap-2 mb-4">
+    {#each filteredComponents as component}
+      <button 
+        class="component-chip text-left {getCategoryColor(component.category)}"
+        on:click={() => selectComponent(component)}
+      >
+        <div class="flex items-center justify-between">
+          <span class="font-medium">{component.name}</span>
+          <div class="w-2 h-2 rounded-full bg-current opacity-50"></div>
+        </div>
+      </button>
+    {/each}
+  </div>
+  
+  <!-- Help Text -->
+  <div class="text-sm text-gray-400 bg-gray-700 bg-opacity-30 p-3 rounded-md">
+    Click components to add them to the current phase
   </div>
 </div>

@@ -15,29 +15,28 @@
   });
 </script>
 
-<header class="bg-slate-800 border-b border-slate-700">
+<header class="bg-gray-800 border-b border-gray-700">
   <div class="container mx-auto px-4 py-4">
     <div class="flex items-center justify-between">
       <!-- Logo -->
       <div class="flex items-center space-x-4">
-        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-          <span class="text-white font-bold text-sm">AP</span>
+        <div class="w-8 h-8 bg-gray-700 rounded-md flex items-center justify-center">
+          <span class="text-gray-100 font-bold text-sm">AP</span>
         </div>
-        <span class="text-lg font-semibold">ArchPath</span>
+        <span class="text-lg font-semibold text-gray-100">ArchPath</span>
       </div>
       
       <!-- Stats -->
       <div class="flex items-center space-x-6">
         <div class="flex items-center space-x-2">
-          <span class="text-slate-400 text-sm">Score:</span>
-          <span class="font-mono font-bold text-blue-400">{score.toLocaleString()}</span>
+          <span class="text-gray-400 text-sm">Score:</span>
+          <span class="font-mono font-bold text-gray-200">{score.toLocaleString()}</span>
         </div>
         
         {#if streak > 0}
           <div class="flex items-center space-x-2">
-            <span class="text-slate-400 text-sm">Streak:</span>
-            <span class="font-mono font-bold text-green-400">{streak}</span>
-            <span class="text-green-400">🔥</span>
+            <span class="text-gray-400 text-sm">Streak:</span>
+            <span class="font-mono font-bold text-gray-200">{streak}</span>
           </div>
         {/if}
         
@@ -46,7 +45,7 @@
           href="https://github.com/archpath/archpath-game" 
           target="_blank"
           rel="noopener noreferrer"
-          class="text-slate-400 hover:text-slate-100 transition-colors"
+          class="text-gray-400 hover:text-gray-200 transition-colors"
           aria-label="View on GitHub"
         >
           <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">

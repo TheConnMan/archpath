@@ -9,8 +9,6 @@
       name: 'Netflix',
       description: 'Video streaming platform',
       difficulty: 'Easy',
-      logo: '🎬',
-      color: 'bg-red-600',
       phases: ['DVD Monolith', 'Cloud Migration', 'Microservices', 'Global AI'],
       users: '230M+ subscribers',
       challenge: 'Scale video streaming globally'
@@ -20,8 +18,6 @@
       name: 'Slack', 
       description: 'Real-time workplace communication',
       difficulty: 'Easy',
-      logo: '💬',
-      color: 'bg-purple-600',
       phases: ['MVP Chat', 'WebSocket Scaling', 'Enterprise', 'Shared Channels'],
       users: '18M+ daily users',
       challenge: 'Handle millions of concurrent connections'
@@ -31,8 +27,6 @@
       name: 'Uber',
       description: 'Ride-sharing platform',
       difficulty: 'Hard',
-      logo: '🚗',
-      color: 'bg-black',
       phases: ['Monolith MVP', 'Geographic Scale', 'Microservices', 'Global Platform'], 
       users: '10,000+ cities',
       challenge: 'Real-time location matching at scale'
@@ -42,8 +36,6 @@
       name: 'Spotify',
       description: 'Music streaming & recommendations',
       difficulty: 'Medium',
-      logo: '🎵',
-      color: 'bg-green-600',
       phases: ['Music MVP', 'Mobile & ML', 'Microservices', 'AI Platform'],
       users: '400M+ users',
       challenge: 'Personalize music for millions of users'
@@ -53,110 +45,106 @@
       name: 'Instagram',
       description: 'Photo & video social platform',
       difficulty: 'Medium',
-      logo: '📸',
-      color: 'bg-pink-600',
       phases: ['Django MVP', 'Scale Monolith', 'Facebook Integration', 'AI Platform'],
       users: '2B+ daily users',
       challenge: 'Scale Django to billions of users'
     }
   ];
-  
+
   function selectCompany(company) {
     dispatch('companySelect', { company });
   }
-  
+
   function getDifficultyColor(difficulty) {
     switch(difficulty) {
-      case 'Easy': return 'text-green-400';
-      case 'Medium': return 'text-yellow-400';
-      case 'Hard': return 'text-red-400';
-      default: return 'text-dark-muted';
+      case 'Easy': return 'text-green-400 bg-green-400 bg-opacity-20';
+      case 'Medium': return 'text-yellow-400 bg-yellow-400 bg-opacity-20';
+      case 'Hard': return 'text-red-400 bg-red-400 bg-opacity-20';
+      default: return 'text-gray-400 bg-gray-400 bg-opacity-20';
     }
   }
 </script>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-12">
   {#each companies as company}
-    <div 
-      class="card hover:bg-slate-700 cursor-pointer transition-all duration-200 hover:scale-105"
+    <button 
+      class="company-card text-left w-full group"
       on:click={() => selectCompany(company)}
-      on:keydown={(e) => e.key === 'Enter' && selectCompany(company)}
-      role="button"
-      tabindex="0"
     >
-      <!-- Company Header -->
-      <div class="flex items-start justify-between mb-4">
+      <!-- Header -->
+      <div class="flex items-center justify-between mb-4">
         <div class="flex items-center space-x-3">
-          <div class="text-3xl">{company.logo}</div>
+          <div class="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center">
+            <span class="text-gray-200 font-semibold text-lg">{company.name.charAt(0)}</span>
+          </div>
           <div>
-            <h3 class="text-xl font-bold">{company.name}</h3>
-            <p class="text-dark-muted text-sm">{company.description}</p>
+            <h3 class="font-semibold text-lg text-gray-100 group-hover:text-white transition-colors">{company.name}</h3>
+            <p class="text-sm text-gray-400">{company.description}</p>
           </div>
         </div>
-        <span class="text-xs px-2 py-1 rounded-full bg-dark-bg {getDifficultyColor(company.difficulty)}">
+        <span class="px-2 py-1 rounded-md text-xs font-medium {getDifficultyColor(company.difficulty)}">
           {company.difficulty}
         </span>
       </div>
       
-      <!-- Company Stats -->
-      <div class="mb-4 space-y-2">
-        <div class="text-sm">
-          <span class="text-dark-muted">Scale:</span>
-          <span class="ml-2 font-mono">{company.users}</span>
+      <!-- Stats -->
+      <div class="space-y-2 mb-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-400">Scale:</span>
+          <span class="text-gray-200">{company.users}</span>
         </div>
-        <div class="text-sm">
-          <span class="text-dark-muted">Challenge:</span>
-          <span class="ml-2">{company.challenge}</span>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-400">Challenge:</span>
+          <span class="text-gray-200">{company.challenge}</span>
         </div>
       </div>
       
-      <!-- Architecture Phases -->
+      <!-- Architecture Evolution -->
       <div class="mb-4">
-        <p class="text-xs text-dark-muted mb-2">Architecture Evolution:</p>
-        <div class="flex flex-wrap gap-1">
+        <p class="text-sm font-medium text-gray-300 mb-2">Architecture Evolution:</p>
+        <div class="grid grid-cols-2 gap-2">
           {#each company.phases as phase, index}
-            <span class="text-xs px-2 py-1 rounded bg-dark-bg text-dark-muted">
+            <div class="text-xs text-gray-400 bg-gray-700 bg-opacity-50 px-2 py-1 rounded">
               {index + 1}. {phase}
-            </span>
+            </div>
           {/each}
         </div>
       </div>
       
-      <!-- CTA -->
-      <div class="pt-4 border-t border-dark-border">
-        <div class="flex items-center justify-between">
-          <span class="text-sm font-medium text-blue-400">Start Challenge →</span>
-          <div class="flex space-x-1">
-            {#each Array(4) as _, i}
-              <div class="w-2 h-2 rounded-full bg-dark-border"></div>
-            {/each}
-          </div>
-        </div>
+      <!-- Action -->
+      <div class="text-center pt-3 border-t border-gray-700">
+        <span class="text-gray-300 group-hover:text-gray-100 transition-colors font-medium">
+          Start Challenge →
+        </span>
       </div>
-    </div>
+    </button>
   {/each}
 </div>
 
-<!-- Info Section -->
-<div class="mt-12 text-center">
-  <div class="card max-w-2xl mx-auto">
-    <h3 class="text-lg font-semibold mb-3">How to Play</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-      <div class="space-y-2">
-        <div class="text-2xl">1️⃣</div>
-        <h4 class="font-medium">Choose Components</h4>
-        <p class="text-dark-muted">Select the right services for each scaling phase</p>
+<!-- How to Play Section -->
+<div class="card max-w-4xl mx-auto">
+  <h3 class="font-semibold text-lg mb-6 text-gray-100">How to Play</h3>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="text-center">
+      <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <span class="text-gray-100 font-bold">1</span>
       </div>
-      <div class="space-y-2">
-        <div class="text-2xl">2️⃣</div>
-        <h4 class="font-medium">Avoid Over-Engineering</h4>
-        <p class="text-dark-muted">Start simple, scale when needed</p>
+      <h4 class="font-medium text-gray-200 mb-2">Choose Components</h4>
+      <p class="text-sm text-gray-400">Select the right services for each scaling phase</p>
+    </div>
+    <div class="text-center">
+      <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <span class="text-gray-100 font-bold">2</span>
       </div>
-      <div class="space-y-2">
-        <div class="text-2xl">3️⃣</div>
-        <h4 class="font-medium">Learn & Improve</h4>
-        <p class="text-dark-muted">Get feedback and learn from real architectures</p>
+      <h4 class="font-medium text-gray-200 mb-2">Avoid Over-Engineering</h4>
+      <p class="text-sm text-gray-400">Start simple, scale when needed</p>
+    </div>
+    <div class="text-center">
+      <div class="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center mx-auto mb-3">
+        <span class="text-gray-100 font-bold">3</span>
       </div>
+      <h4 class="font-medium text-gray-200 mb-2">Learn & Improve</h4>
+      <p class="text-sm text-gray-400">Get feedback and learn from real architectures</p>
     </div>
   </div>
 </div>
