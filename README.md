@@ -1,47 +1,129 @@
-# Svelte + Vite
+# ArchPath 🏗️
 
-This template should help get you started developing with Svelte in Vite.
+**Learn architectural evolution through the real stories of tech companies**
 
-## Recommended IDE Setup
+ArchPath is an interactive educational game where you learn system design by following the architectural evolution of major tech companies from MVP to enterprise scale. Understand not just *what* components to use, but *why* they matter at each stage.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+## 🎯 What You'll Learn
 
-## Need an official Svelte framework?
+- **Real Architecture Patterns**: Based on actual tech company evolution stories
+- **Scaling Decisions**: Why companies choose specific components at different scales  
+- **Architectural Reasoning**: Deep explanations of architectural trade-offs
+- **Best Practices**: Learn from Netflix, Slack, Uber, Spotify, and Instagram
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+## 🚀 Play Now
 
-## Technical considerations
+**Live Game**: [https://theconnman.github.io/archpath/](https://theconnman.github.io/archpath/)
 
-**Why use this over SvelteKit?**
+## 🎮 How to Play
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+1. **Choose a Company**: Select from 5 real tech companies
+2. **Build Architecture**: Pick components for each scaling phase
+3. **Learn the Why**: Get detailed explanations of architectural decisions
+4. **Progress Through Phases**: MVP → First Scale → Growth Scale → Enterprise
 
-This template contains as little as possible to get started with Vite + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+## 🏢 Featured Companies
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+- **Netflix** (Easy): Video streaming platform evolution
+- **Slack** (Easy): Real-time workplace communication scaling  
+- **Uber** (Hard): Ride-sharing platform challenges
+- **Spotify** (Medium): Music streaming and recommendations
+- **Instagram** (Medium): Photo sharing to billions of users
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+## ✨ Key Features
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+### Educational Focus
+- **Component Tooltips**: Real-world examples (nginx, PostgreSQL, AWS S3)
+- **Architectural Rationale**: Learn why specific components work at each scale
+- **Historical Context**: Actual scaling challenges these companies faced
 
-**Why include `.vscode/extensions.json`?**
+### Game Mechanics
+- **Phase-by-Phase Learning**: 4 distinct scaling stages per company
+- **Smart Scoring**: Rewards good choices, penalizes over-engineering
+- **Educational Feedback**: Detailed explanations, not just points
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+### Technical Excellence
+- **Responsive Design**: Works on all devices
+- **Dark Mode**: Engineer-friendly interface
+- **Comprehensive Testing**: 120+ test scenarios
+- **Fast Performance**: Optimized Svelte + Vite build
 
-**Why enable `checkJs` in the JS template?**
+## 🛠️ Development
 
-It is likely that most cases of changing variable types in runtime are likely to be accidental, rather than deliberate. This provides advanced typechecking out of the box. Should you like to take advantage of the dynamically-typed nature of JavaScript, it is trivial to change the configuration.
+### Quick Start
+```bash
+# Clone the repository
+git clone https://github.com/TheConnMan/archpath.git
+cd archpath
 
-**Why is HMR not preserving my local component state?**
+# Install dependencies
+npm install
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/sveltejs/svelte-hmr/tree/master/packages/svelte-hmr#preservation-of-local-state).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```js
-// store.js
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+# Start development server
+npm run dev
 ```
+
+### Available Scripts
+```bash
+npm run dev          # Development server
+npm run build        # Production build
+npm run preview      # Preview production build
+npm run test         # Run Playwright tests
+npm run test:ui      # Run tests with UI
+npm run deploy       # Deploy to GitHub Pages
+```
+
+### Tech Stack
+- **Frontend**: Svelte 5 + Vite
+- **Styling**: TailwindCSS (dark mode, responsive)
+- **Testing**: Playwright (120+ scenarios)
+- **Deployment**: GitHub Pages
+- **Architecture**: Component-based, consolidated state management
+
+## 🧪 Testing
+
+Comprehensive test suite covering:
+- Complete game flow (company selection → phase completion)
+- Component interaction (selection, removal, tooltips)
+- Scoring system (perfect scores, penalties, accumulation)
+- UI/UX (responsive design, accessibility, dark mode)
+- All companies (unique challenges, progression)
+
+```bash
+npm run test        # Run all tests
+npm run test:ui     # Interactive test runner
+```
+
+## 🎯 Educational Philosophy
+
+ArchPath transforms system design learning from **pattern memorization** to **architectural understanding**:
+
+- **Real Stories**: Based on actual company architecture evolution
+- **Contextual Learning**: Understand business drivers behind technical decisions
+- **Progressive Complexity**: Start simple, scale appropriately
+- **Architectural Reasoning**: Learn the "why" behind every component choice
+
+## 🤝 Contributing
+
+We welcome contributions! Areas where you can help:
+
+- **New Companies**: Add more tech company evolution stories
+- **Educational Content**: Improve architectural explanations
+- **Features**: Onboarding tutorial, advanced scoring, etc.
+- **Testing**: Expand test coverage
+- **Documentation**: Improve guides and explanations
+
+## 📜 License
+
+MIT License - see LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- Built with love using Svelte and TailwindCSS
+- Architecture patterns inspired by real tech company engineering blogs
+- Educational approach guided by UX research and testing
+
+---
+
+**Ready to learn system design through real company stories?**  
+🎮 **[Start Playing →](https://theconnman.github.io/archpath/)**
