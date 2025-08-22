@@ -21,7 +21,7 @@ test.describe('UI & Accessibility', () => {
       page.getByRole('heading', { level: 1, name: 'Netflix Architecture Challenge' })
     ).toBeVisible();
     await expect(page.getByRole('heading', { level: 2, name: 'Phase 1: MVP' })).toBeVisible();
-    await expect(page.getByRole('heading', { level: 3, name: 'Components' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 3, name: 'Components' }).first()).toBeVisible();
     await expect(page.getByRole('heading', { level: 3, name: 'Challenge' })).toBeVisible();
   });
 
@@ -48,14 +48,14 @@ test.describe('UI & Accessibility', () => {
   test('component tooltips provide educational content', async ({ page }) => {
     await page.getByRole('button', { name: /Netflix/ }).click();
 
-    // Check that tooltips contain educational information
-    const webServerBtn = page.getByRole('button', { name: 'Web Server' });
+    // Check that component tooltips contain educational information
+    const webServerBtn = page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' });
     await expect(webServerBtn).toHaveAttribute('title', /Examples:.*nginx.*Apache/);
 
-    const databaseBtn = page.getByRole('button', { name: 'Database' });
+    const databaseBtn = page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' });
     await expect(databaseBtn).toHaveAttribute('title', /Examples:.*PostgreSQL.*MySQL/);
 
-    const authBtn = page.getByRole('button', { name: 'Auth Service' });
+    const authBtn = page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Auth Service' });
     await expect(authBtn).toHaveAttribute('title', /Examples:.*Auth0.*AWS Cognito/);
   });
 
@@ -67,13 +67,13 @@ test.describe('UI & Accessibility', () => {
     await expect(phase1).toHaveText('1');
 
     // Complete phase and check progression
-    await page.getByRole('button', { name: 'Web Server' }).click();
-    await page.getByRole('button', { name: 'Database' }).click();
-    await page.getByRole('button', { name: 'Auth Service' }).click();
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' }).click();
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' }).click();
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Auth Service' }).click();
     await page.getByRole('button', { name: 'Submit Phase' }).click();
 
-    // Wait for progression
-    await page.waitForTimeout(3500);
+    // Click Continue to Next Phase
+    await page.getByRole('button', { name: 'Continue to Next Phase →' }).click();
 
     // Phase 2 should now be active
     await expect(page.getByRole('heading', { name: 'Phase 2: First Scale' })).toBeVisible();

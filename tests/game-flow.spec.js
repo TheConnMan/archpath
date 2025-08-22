@@ -35,12 +35,13 @@ test.describe('ArchPath Game Flow', () => {
     // Verify we're in MVP phase
     await expect(page.getByRole('heading', { name: 'Phase 1: MVP' })).toBeVisible();
     await expect(page.getByText('Phase Score')).toBeVisible();
-    await expect(page.getByText('0')).toBeVisible();
+    // Check initial score is 0 by looking for the score display area specifically
+    await expect(page.locator('.text-right').getByText('0')).toBeVisible();
 
-    // Select required MVP components
-    await page.getByRole('button', { name: 'Web Server' }).click();
-    await page.getByRole('button', { name: 'Database' }).click();
-    await page.getByRole('button', { name: 'Auth Service' }).click();
+    // Select required MVP components from the component palette
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' }).click();
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' }).click();
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Auth Service' }).click();
 
     // Verify components are selected
     await expect(page.getByText('Your Architecture (3 components)')).toBeVisible();
@@ -53,12 +54,12 @@ test.describe('ArchPath Game Flow', () => {
     await expect(page.getByText('+20')).toBeVisible();
     await expect(page.getByText('100% completion')).toBeVisible();
 
-    // Wait for auto-progression
-    await page.waitForTimeout(3500);
+    // Click Continue to Next Phase button
+    await page.getByRole('button', { name: 'Continue to Next Phase →' }).click();
 
     // Should be in Phase 2 now
     await expect(page.getByRole('heading', { name: 'Phase 2: First Scale' })).toBeVisible();
-    await expect(page.getByText('20')).toBeVisible(); // Score should be updated
+    await expect(page.locator('.text-right').getByText('20')).toBeVisible(); // Score should be updated
   });
 
   test('can navigate back to menu', async ({ page }) => {
@@ -75,8 +76,8 @@ test.describe('ArchPath Game Flow', () => {
   test('component selection and removal works correctly', async ({ page }) => {
     await page.getByRole('button', { name: /Slack/ }).click();
 
-    // Select a component
-    await page.getByRole('button', { name: 'Web Server' }).click();
+    // Select a component from the palette
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' }).click();
     await expect(page.getByText('Your Architecture (1 components)')).toBeVisible();
 
     // Remove the component

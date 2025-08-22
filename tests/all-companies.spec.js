@@ -80,14 +80,14 @@ test.describe('All Companies', () => {
       await page.goto('/');
       await page.getByRole('button', { name: new RegExp(company.name) }).click();
 
-      // Complete MVP phase with basic components
-      await page.getByRole('button', { name: 'Web Server' }).click();
-      await page.getByRole('button', { name: 'Database' }).click();
-      await page.getByRole('button', { name: 'Auth Service' }).click();
+      // Complete MVP phase with basic components from the component palette
+      await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' }).click();
+      await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' }).click();
+      await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Auth Service' }).click();
       await page.getByRole('button', { name: 'Submit Phase' }).click();
 
-      // Wait for progression
-      await page.waitForTimeout(3500);
+      // Click Continue to Next Phase
+      await page.getByRole('button', { name: 'Continue to Next Phase →' }).click();
 
       // Should be in Phase 2
       await expect(page.getByRole('heading', { name: 'Phase 2: First Scale' })).toBeVisible();

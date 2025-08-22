@@ -42,7 +42,7 @@
 
         <!-- GitHub link -->
         <a
-          href="https://github.com/archpath/archpath-game"
+          href="https://github.com/TheConnMan/archpath"
           target="_blank"
           rel="noopener noreferrer"
           class="text-gray-400 hover:text-gray-200 transition-colors"
