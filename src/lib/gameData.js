@@ -216,3 +216,145 @@ export function getPhaseDescription(phase, companyId) {
   
   return descriptions[companyId]?.[phase] || `Choose the right components for ${phase} phase.`;
 }
+
+// Architectural rationale explanations for post-phase analysis
+export const architecturalRationale = {
+  netflix: {
+    mvp: {
+      title: "Simple Content Delivery Foundation",
+      explanation: "Netflix started as a DVD-by-mail service moving online. At MVP stage, the architecture needed to be simple and cost-effective.",
+      keyInsights: [
+        "Web Server handles basic catalog browsing and user accounts",
+        "Database stores user profiles, preferences, and content metadata", 
+        "File Storage (optional) for initial small video library",
+        "Avoided CDN/caching - premature optimization for small user base",
+        "No load balancer needed - single server could handle early traffic"
+      ],
+      architecturalPrinciples: [
+        "Start simple: Minimum viable infrastructure",
+        "Avoid over-engineering: No complex scaling before you need it",
+        "Focus on core business logic: Content catalog and user management"
+      ]
+    },
+    scale1: {
+      title: "Video Streaming at Scale",
+      explanation: "With 10M+ users streaming video, Netflix needed infrastructure to deliver large files globally with good performance.",
+      keyInsights: [
+        "CDN becomes critical for video delivery - reduces bandwidth costs",
+        "File Storage scaled up for massive video library",
+        "Cache improves metadata access and reduces database load",
+        "Load Balancer distributes traffic across multiple web servers",
+        "Monitoring essential to track video quality and delivery issues"
+      ],
+      architecturalPrinciples: [
+        "Content delivery optimization: CDN for global video streaming",
+        "Performance monitoring: Track user experience quality",
+        "Horizontal scaling: Multiple servers behind load balancer"
+      ]
+    },
+    scale2: {
+      title: "Personalization and Microservices",
+      explanation: "With 100M+ users, Netflix needed recommendation engines, multiple content types, and resilient architecture.",
+      keyInsights: [
+        "API Gateway manages microservices communication",
+        "Message Queues enable asynchronous processing for recommendations",
+        "Analytics track user behavior for machine learning",
+        "Search Engine powers content discovery",
+        "Multiple caching layers optimize different data types"
+      ],
+      architecturalPrinciples: [
+        "Microservices architecture: Independent, scalable services",
+        "Data-driven decisions: Analytics for personalization",
+        "Asynchronous processing: Decouple services with messaging"
+      ]
+    },
+    enterprise: {
+      title: "Global Streaming Platform",
+      explanation: "Netflix operates in 190+ countries with enterprise-grade security, compliance, and operational excellence.",
+      keyInsights: [
+        "Auth Service handles global user authentication and security",
+        "Firewall and security for content protection and compliance",
+        "Event Streaming processes billions of user interactions",
+        "Advanced analytics for business intelligence and content decisions",
+        "Multi-region redundancy and disaster recovery"
+      ],
+      architecturalPrinciples: [
+        "Security first: Protect content and user data globally",
+        "Operational excellence: Advanced monitoring and automation",
+        "Business intelligence: Data drives content and technology decisions"
+      ]
+    }
+  },
+  slack: {
+    mvp: {
+      title: "Real-time Messaging Foundation", 
+      explanation: "Slack's core value is real-time team communication. The MVP architecture prioritized message delivery reliability.",
+      keyInsights: [
+        "WebSockets enable real-time bidirectional communication",
+        "Database stores messages, channels, and user data",
+        "Web Server handles authentication and basic HTTP requests",
+        "Cache (optional) improves message history performance",
+        "Avoided CDN - not needed for text-based messaging"
+      ],
+      architecturalPrinciples: [
+        "Real-time first: WebSocket connections for instant messaging",
+        "Message persistence: Reliable storage and retrieval",
+        "Simple and focused: Core messaging functionality only"
+      ]
+    },
+    scale1: {
+      title: "Concurrent Connection Scaling",
+      explanation: "With millions of concurrent users, Slack needed to scale WebSocket connections and message throughput.",
+      keyInsights: [
+        "Load Balancer distributes WebSocket connections across servers",
+        "Cache becomes critical for fast message history and user presence",
+        "Message Queues handle high-volume message processing",
+        "Monitoring tracks connection health and message delivery",
+        "Database optimization for high read/write message volumes"
+      ],
+      architecturalPrinciples: [
+        "Connection scaling: Distribute WebSocket load efficiently",
+        "Message throughput: Queue-based processing for reliability", 
+        "Performance monitoring: Track real-time communication quality"
+      ]
+    },
+    scale2: {
+      title: "Enterprise Features and Search",
+      explanation: "Enterprise customers need advanced features like search, integrations, and compliance capabilities.",
+      keyInsights: [
+        "Search Engine enables finding messages across large message histories",
+        "API Gateway manages third-party integrations and webhooks",
+        "Analytics track team collaboration patterns",
+        "Advanced message queuing for integration processing",
+        "Security features for enterprise compliance"
+      ],
+      architecturalPrinciples: [
+        "Enterprise readiness: Advanced search and integrations",
+        "Data insights: Analytics on team communication patterns",
+        "Integration platform: API-driven third-party connections"
+      ]
+    },
+    enterprise: {
+      title: "Global Enterprise Platform",
+      explanation: "Enterprise Slack supports large organizations with advanced security, compliance, and management features.",
+      keyInsights: [
+        "Auth Service provides enterprise SSO and security policies",
+        "Firewall and security for data protection and compliance",
+        "Advanced analytics for organization insights and administration",
+        "Event processing for audit logs and compliance reporting",
+        "Multi-tenant architecture for organization isolation"
+      ],
+      architecturalPrinciples: [
+        "Enterprise security: SSO, compliance, and data protection",
+        "Administrative control: Organization management and policies",
+        "Audit and compliance: Complete activity tracking and reporting"
+      ]
+    }
+  }
+  // Additional companies would follow similar pattern...
+};
+
+// Get architectural rationale for a specific company and phase
+export function getArchitecturalRationale(companyId, phase) {
+  return architecturalRationale[companyId]?.[phase] || null;
+}

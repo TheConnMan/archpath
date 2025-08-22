@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import ComponentPalette from './ComponentPalette.svelte';
   import { componentData } from './componentData.js';
-  import { calculatePhaseScore, getPhaseDescription } from './gameData.js';
+  import { calculatePhaseScore, getPhaseDescription, getArchitecturalRationale } from './gameData.js';
   
   export let company;
   export let currentPhase;
@@ -20,6 +20,7 @@
   let score = 0;
   let phaseComplete = false;
   let lastPhaseResult = null;
+  let showArchitecturalRationale = false;
   
   function handleComponentSelect(event) {
     const component = event.detail.component;
@@ -55,6 +56,7 @@
         selectedComponents = [];
         phaseComplete = false;
         lastPhaseResult = null;
+        showArchitecturalRationale = false;
       }
     }, 3000);
   }
@@ -63,7 +65,12 @@
     dispatch('backToMenu');
   }
   
+  function toggleArchitecturalRationale() {
+    showArchitecturalRationale = !showArchitecturalRationale;
+  }
+  
   $: currentPhaseData = phases.find(p => p.id === currentPhase);
+  $: rationaleData = getArchitecturalRationale(company.id, currentPhase);
 </script>
 
 <div class="max-w-7xl mx-auto">
@@ -223,6 +230,52 @@
                 {/each}
               </div>
             </details>
+          {/if}
+          
+          <!-- Architectural Rationale -->
+          {#if rationaleData}
+            <div class="mt-6 border-t border-green-600 pt-4">
+              <button 
+                class="flex items-center justify-between w-full text-left text-green-300 hover:text-green-200 transition-colors"
+                on:click={toggleArchitecturalRationale}
+              >
+                <h4 class="font-medium text-green-400">🎯 Why This Architecture Works</h4>
+                <span class="text-xl transform transition-transform {showArchitecturalRationale ? 'rotate-180' : ''}">▼</span>
+              </button>
+              
+              {#if showArchitecturalRationale}
+                <div class="mt-4 space-y-4 text-green-300 text-sm">
+                  <div>
+                    <h5 class="font-medium text-green-200 mb-2">{rationaleData.title}</h5>
+                    <p class="text-green-300 leading-relaxed">{rationaleData.explanation}</p>
+                  </div>
+                  
+                  <div>
+                    <h6 class="font-medium text-green-200 mb-2">Key Architectural Insights:</h6>
+                    <ul class="space-y-1 ml-4">
+                      {#each rationaleData.keyInsights as insight}
+                        <li class="flex items-start">
+                          <span class="text-green-400 mr-2 mt-1">•</span>
+                          <span>{insight}</span>
+                        </li>
+                      {/each}
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h6 class="font-medium text-green-200 mb-2">Architectural Principles Applied:</h6>
+                    <ul class="space-y-1 ml-4">
+                      {#each rationaleData.architecturalPrinciples as principle}
+                        <li class="flex items-start">
+                          <span class="text-blue-400 mr-2 mt-1">▶</span>
+                          <span>{principle}</span>
+                        </li>
+                      {/each}
+                    </ul>
+                  </div>
+                </div>
+              {/if}
+            </div>
           {/if}
           
           <p class="text-green-300 text-sm mt-4">
