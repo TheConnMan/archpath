@@ -53,6 +53,7 @@
       <button 
         class="component-chip text-left {getCategoryColor(component.category)}"
         on:click={() => selectComponent(component)}
+        title={component.tooltip}
       >
         <div class="flex items-center justify-between">
           <span class="font-medium">{component.name}</span>
