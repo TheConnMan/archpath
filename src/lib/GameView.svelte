@@ -209,7 +209,7 @@
     <div class="lg:col-span-3 space-y-6">
       <!-- Challenge -->
       <div class="card">
-        <h3 class="font-semibold mb-2">Challenge</h3>
+        <h3 class="font-semibold mb-4">Challenge</h3>
         <p class="text-gray-400">{getPhaseDescription(currentPhase, company.id)}</p>
       </div>
 

@@ -219,7 +219,7 @@
               </div>
               <div class="flex justify-between text-sm">
                 <span class="text-gray-400">Challenge:</span>
-                <span class="text-gray-200">{company.challenge}</span>
+                <span class="text-gray-200 ml-2">{company.challenge}</span>
               </div>
             </div>
 
