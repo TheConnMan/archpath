@@ -12,57 +12,57 @@
   .btn-primary {
     @apply bg-gray-700 hover:bg-gray-600 text-gray-100 px-4 py-2 rounded-md transition-colors font-medium;
   }
-  
+
   .btn-secondary {
     @apply bg-transparent hover:bg-gray-800 text-gray-300 border border-gray-600 px-4 py-2 rounded-md transition-colors font-medium;
   }
-  
+
   .card {
     @apply bg-gray-800 border border-gray-700 rounded-lg p-6;
   }
-  
+
   .component-chip {
     @apply px-3 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors;
     @apply border border-gray-600 hover:border-gray-500;
   }
-  
+
   .component-chip:hover {
     @apply bg-gray-700;
   }
-  
+
   .component-chip.selected {
     @apply bg-gray-600 border-gray-500;
   }
-  
+
   .drop-zone {
     @apply border-2 border-dashed border-gray-600 rounded-lg p-6 min-h-32;
     @apply transition-colors hover:border-gray-500;
   }
-  
+
   .drop-zone.active {
     @apply border-gray-500 bg-gray-800;
   }
-  
+
   .company-card {
     @apply bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-gray-600 transition-colors cursor-pointer;
   }
-  
+
   .company-card:hover {
     @apply bg-gray-700;
   }
-  
+
   .phase-indicator {
     @apply w-8 h-8 rounded-full border-2 flex items-center justify-center text-sm font-medium;
   }
-  
+
   .phase-indicator.completed {
     @apply bg-green-700 border-green-600 text-green-100;
   }
-  
+
   .phase-indicator.current {
     @apply bg-gray-700 border-gray-500 text-gray-100;
   }
-  
+
   .phase-indicator.upcoming {
     @apply bg-transparent border-gray-600 text-gray-400;
   }

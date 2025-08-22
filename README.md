@@ -2,14 +2,15 @@
 
 **Learn architectural evolution through the real stories of tech companies**
 
-ArchPath is an interactive educational game where you learn system design by following the architectural evolution of major tech companies from MVP to enterprise scale. Understand not just *what* components to use, but *why* they matter at each stage.
+ArchPath is an interactive educational game where you learn system design by following the architectural evolution of major tech companies from MVP to enterprise scale. Explore **11 companies** across Tech, Finance, and Ecommerce industries. Understand not just *what* components to use, but *why* they matter at each stage.
 
 ## 🎯 What You'll Learn
 
-- **Real Architecture Patterns**: Based on actual tech company evolution stories
+- **Real Architecture Patterns**: Based on actual company evolution across multiple industries
 - **Scaling Decisions**: Why companies choose specific components at different scales  
 - **Architectural Reasoning**: Deep explanations of architectural trade-offs
-- **Best Practices**: Learn from Netflix, Slack, Uber, Spotify, and Instagram
+- **Industry Diversity**: Learn from Tech, Finance, and Ecommerce scaling challenges
+- **Best Practices**: Learn from 11 major companies including Netflix, Stripe, Shopify, and more
 
 ## 🚀 Play Now
 
@@ -17,18 +18,29 @@ ArchPath is an interactive educational game where you learn system design by fol
 
 ## 🎮 How to Play
 
-1. **Choose a Company**: Select from 5 real tech companies
+1. **Choose a Company**: Select from 11 companies across Tech, Finance, and Ecommerce
 2. **Build Architecture**: Pick components for each scaling phase
 3. **Learn the Why**: Get detailed explanations of architectural decisions
 4. **Progress Through Phases**: MVP → First Scale → Growth Scale → Enterprise
 
 ## 🏢 Featured Companies
 
+### Tech Companies
 - **Netflix** (Easy): Video streaming platform evolution
 - **Slack** (Easy): Real-time workplace communication scaling  
 - **Uber** (Hard): Ride-sharing platform challenges
 - **Spotify** (Medium): Music streaming and recommendations
 - **Instagram** (Medium): Photo sharing to billions of users
+
+### Finance Companies
+- **Stripe** (Medium): Payment processing from simple API to $1T platform
+- **Monzo** (Hard): Digital banking with 2,800 microservices architecture
+- **Robinhood** (Hard): Trading platform handling volatile market spikes
+
+### Ecommerce Companies
+- **Shopify** (Hard): Multi-tenant platform serving millions of merchants
+- **DoorDash** (Hard): Real-time logistics coordinating three-sided marketplace
+- **Etsy** (Medium): Creative marketplace with personalized discovery
 
 ## ✨ Key Features
 
