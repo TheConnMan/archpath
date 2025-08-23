@@ -59,9 +59,13 @@
     loadProgress();
   }
 
-  function handleComponentSelect(event) {
+  function handleComponentToggle(event) {
     const component = event.detail.component;
-    if (!selectedComponents.includes(component.id)) {
+    if (selectedComponents.includes(component.id)) {
+      // Remove component if already selected
+      selectedComponents = selectedComponents.filter(id => id !== component.id);
+    } else {
+      // Add component if not selected
       selectedComponents = [...selectedComponents, component.id];
     }
   }
@@ -228,7 +232,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <!-- Component Palette (Left Sidebar) -->
     <div class="lg:col-span-1">
-      <ComponentPalette {selectedComponents} on:componentSelect={handleComponentSelect} />
+      <ComponentPalette {selectedComponents} on:componentToggle={handleComponentToggle} />
     </div>
 
     <!-- Phase Area (Main Content) - Merged from PhaseArea.svelte -->

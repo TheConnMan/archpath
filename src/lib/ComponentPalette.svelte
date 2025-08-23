@@ -9,7 +9,7 @@
   let selectedCategory = 'all';
 
   function selectComponent(component) {
-    dispatch('componentSelect', { component });
+    dispatch('componentToggle', { component });
   }
 
   function setCategory(categoryId) {
@@ -79,6 +79,6 @@
 
   <!-- Help Text -->
   <div class="text-sm text-gray-400 bg-gray-700 bg-opacity-30 p-3 rounded-md">
-    Click components to add them to the current phase
+    Click components to add/remove them from the current phase
   </div>
 </div>

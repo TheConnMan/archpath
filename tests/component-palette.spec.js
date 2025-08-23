@@ -68,7 +68,7 @@ test.describe('Component Palette', () => {
   });
 
   test('help text is displayed', async ({ page }) => {
-    await expect(page.getByText('Click components to add them to the current phase')).toBeVisible();
+    await expect(page.getByText('Click components to add/remove them from the current phase')).toBeVisible();
   });
 
   test('component selection highlighting works on mobile', async ({ page }) => {
@@ -96,5 +96,39 @@ test.describe('Component Palette', () => {
 
     // Verify they appear in the selected components list below
     await expect(page.getByText('Your Architecture (2 components)')).toBeVisible();
+  });
+
+  test('component toggle functionality (select and deselect)', async ({ page }) => {
+    // Select Web Server component first time
+    const webServerButton = page.getByRole('button', { name: 'Web Server' }).and(page.locator('.component-chip'));
+    await webServerButton.click();
+
+    // Should be selected
+    await expect(webServerButton.locator('text=✓')).toBeVisible();
+    await expect(page.getByText('Your Architecture (1 components)')).toBeVisible();
+
+    // Click again to deselect
+    await webServerButton.click();
+
+    // Should no longer be selected
+    await expect(webServerButton.locator('text=✓')).not.toBeVisible();
+    await expect(page.getByText('Your Architecture (0 components)')).toBeVisible();
+    await expect(page.getByText('No components selected yet')).toBeVisible();
+
+    // Select multiple components and then deselect one
+    await webServerButton.click();
+    const databaseButton = page.getByRole('button', { name: 'Database' }).and(page.locator('.component-chip'));
+    await databaseButton.click();
+
+    // Should have 2 components selected
+    await expect(page.getByText('Your Architecture (2 components)')).toBeVisible();
+
+    // Deselect database
+    await databaseButton.click();
+
+    // Should have 1 component selected (Web Server)
+    await expect(page.getByText('Your Architecture (1 components)')).toBeVisible();
+    await expect(webServerButton.locator('text=✓')).toBeVisible();
+    await expect(databaseButton.locator('text=✓')).not.toBeVisible();
   });
 });
