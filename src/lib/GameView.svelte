@@ -180,7 +180,7 @@
     </div>
 
     <div class="text-right sm:text-right">
-      <div class="text-sm text-gray-400">Score</div>
+      <div class="text-sm text-gray-400">Phase Score</div>
       <div class="text-xl sm:text-2xl font-bold text-gray-100">{score}</div>
     </div>
   </div>
