@@ -29,9 +29,9 @@
     return colors[categoryId] || 'border-gray-500 text-gray-400';
   }
 
-  function isSelected(componentId) {
+  $: isSelected = (componentId) => {
     return selectedComponents.includes(componentId);
-  }
+  };
 
   $: filteredComponents =
     selectedCategory === 'all'
@@ -61,13 +61,17 @@
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
     {#each filteredComponents as component}
       <button
-        class="component-chip text-left {getCategoryColor(component.category)} {isSelected(component.id) ? 'selected bg-gray-600 border-current' : ''}"
+        class="component-chip text-left {getCategoryColor(component.category)} {isSelected(component.id) ? 'selected bg-gray-600 border-current border-2' : ''}"
         on:click={() => selectComponent(component)}
         title={component.tooltip}
       >
         <div class="flex items-center justify-between">
           <span class="font-medium">{component.name}</span>
-          <div class="w-2 h-2 rounded-full bg-current opacity-50 {isSelected(component.id) ? 'opacity-100' : ''}"></div>
+          {#if isSelected(component.id)}
+            <div class="text-green-400 font-bold">✓</div>
+          {:else}
+            <div class="w-2 h-2 rounded-full bg-current opacity-50"></div>
+          {/if}
         </div>
       </button>
     {/each}

@@ -228,7 +228,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <!-- Component Palette (Left Sidebar) -->
     <div class="lg:col-span-1">
-      <ComponentPalette bind:selectedComponents on:componentSelect={handleComponentSelect} />
+      <ComponentPalette {selectedComponents} on:componentSelect={handleComponentSelect} />
     </div>
 
     <!-- Phase Area (Main Content) - Merged from PhaseArea.svelte -->

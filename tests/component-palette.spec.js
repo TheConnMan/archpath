@@ -29,12 +29,12 @@ test.describe('Component Palette', () => {
     await page.locator('.flex.flex-wrap.gap-2').getByRole('button', { name: 'Compute' }).click();
 
     // Should see compute components in the components grid
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'App Server' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Serverless' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Web Server' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'App Server' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Serverless' }).and(page.locator('.component-chip'))).toBeVisible();
 
     // Should NOT see database components in the components grid
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' })).not.toBeVisible();
+    await expect(page.getByRole('button', { name: 'Database' }).and(page.locator('.component-chip'))).not.toBeVisible();
   });
 
   test('shows all components when All category selected', async ({ page }) => {
@@ -45,22 +45,22 @@ test.describe('Component Palette', () => {
     await page.locator('.flex.flex-wrap.gap-2').getByRole('button', { name: 'All' }).click();
 
     // Should see all components again in the components grid
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'CDN' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Load Balancer' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Message Queue' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Monitoring' })).toBeVisible();
-    await expect(page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Auth Service' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Web Server' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Database' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'CDN' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Load Balancer' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Message Queue' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Monitoring' }).and(page.locator('.component-chip'))).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Auth Service' }).and(page.locator('.component-chip'))).toBeVisible();
   });
 
   test('components have educational tooltips', async ({ page }) => {
     // Check that Web Server component has tooltip with educational content
-    const webServerButton = page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' });
+    const webServerButton = page.getByRole('button', { name: 'Web Server' }).and(page.locator('.component-chip'));
     await expect(webServerButton).toHaveAttribute('title', /Serves static content.*nginx.*Apache/);
 
     // Check Database component tooltip
-    const databaseButton = page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' });
+    const databaseButton = page.getByRole('button', { name: 'Database' }).and(page.locator('.component-chip'));
     await expect(databaseButton).toHaveAttribute(
       'title',
       /Persistent data storage.*PostgreSQL.*MySQL/
@@ -69,5 +69,32 @@ test.describe('Component Palette', () => {
 
   test('help text is displayed', async ({ page }) => {
     await expect(page.getByText('Click components to add them to the current phase')).toBeVisible();
+  });
+
+  test('component selection highlighting works on mobile', async ({ page }) => {
+    // Set mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    // Select Web Server component
+    const webServerButton = page.getByRole('button', { name: 'Web Server' }).and(page.locator('.component-chip'));
+    await webServerButton.click();
+
+    // Check that component shows selected state with checkmark
+    await expect(webServerButton.locator('text=✓')).toBeVisible();
+    
+    // Check that component has selected styling classes
+    await expect(webServerButton).toHaveClass(/selected/);
+    await expect(webServerButton).toHaveClass(/bg-gray-600/);
+    
+    // Select Database component
+    const databaseButton = page.getByRole('button', { name: 'Database' }).and(page.locator('.component-chip'));
+    await databaseButton.click();
+
+    // Both components should show as selected
+    await expect(webServerButton.locator('text=✓')).toBeVisible();
+    await expect(databaseButton.locator('text=✓')).toBeVisible();
+
+    // Verify they appear in the selected components list below
+    await expect(page.getByText('Your Architecture (2 components)')).toBeVisible();
   });
 });
