@@ -589,6 +589,12 @@ export const architecturalRationale = {
         'Avoid over-engineering: No complex scaling before you need it',
         'Focus on core business logic: Content catalog and user management',
       ],
+      architectureLinks: [
+        {
+          title: "Netflix Tech Blog - Architecture Evolution",
+          url: "https://netflixtechblog.com/tagged/architecture"
+        }
+      ],
     },
     scale1: {
       title: 'Video Streaming at Scale',
@@ -605,6 +611,12 @@ export const architecturalRationale = {
         'Content delivery optimization: CDN for global video streaming',
         'Performance monitoring: Track user experience quality',
         'Horizontal scaling: Multiple servers behind load balancer',
+      ],
+      architectureLinks: [
+        {
+          title: "Netflix CDN Strategy",
+          url: "https://netflixtechblog.com/serving-100-gbps-from-an-open-connect-appliance-cdb51dda3b99"
+        }
       ],
     },
     scale2: {
@@ -658,6 +670,12 @@ export const architecturalRationale = {
         'Real-time first: WebSocket connections for instant messaging',
         'Message persistence: Reliable storage and retrieval',
         'Simple and focused: Core messaging functionality only',
+      ],
+      architectureLinks: [
+        {
+          title: "Slack Engineering Blog",
+          url: "https://slack.engineering/"
+        }
       ],
     },
     scale1: {

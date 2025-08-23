@@ -105,21 +105,34 @@
   function nextPhase() {
     if (phases.findIndex(p => p.id === currentPhase) < phases.length - 1) {
       const currentIndex = phases.findIndex(p => p.id === currentPhase);
-      currentPhase = phases[currentIndex + 1].id;
-      selectedComponents = [];
+      const nextPhaseId = phases[currentIndex + 1].id;
+      
+      // Carry forward current components to next phase
+      const carryForwardComponents = [...selectedComponents];
+      
+      currentPhase = nextPhaseId;
+      selectedComponents = carryForwardComponents; // Keep previous selections
       phaseComplete = false;
       lastPhaseResult = null;
       showArchitecturalRationale = false;
 
-      // Update progress with new phase
+      // Check if next phase was already completed and restore its additional components
       const savedProgress = JSON.parse(localStorage.getItem('archpath-progress') || '{}');
+      const nextPhaseKey = `${company.id}-${nextPhaseId}`;
+      if (savedProgress.phaseComponents?.[nextPhaseKey]) {
+        // Merge with existing phase components (union of both sets)
+        const existingPhaseComponents = savedProgress.phaseComponents[nextPhaseKey];
+        selectedComponents = [...new Set([...carryForwardComponents, ...existingPhaseComponents])];
+      }
+
+      // Update progress with new phase
       const progress = {
         company: company.id,
-        currentPhase,
+        currentPhase: nextPhaseId,
         totalScore: score,
         completedPhases: completedPhases,
-        selectedComponents: [],
-        phaseComponents: savedProgress.phaseComponents || {}, // Preserve existing phase components
+        selectedComponents: selectedComponents,
+        phaseComponents: savedProgress.phaseComponents || {},
       };
       localStorage.setItem('archpath-progress', JSON.stringify(progress));
     }
@@ -133,29 +146,42 @@
     showArchitecturalRationale = !showArchitecturalRationale;
   }
 
+  function getCategoryColorForSelected(categoryId) {
+    const colors = {
+      compute: 'border-orange-500',
+      database: 'border-purple-500',
+      storage: 'border-green-500',
+      network: 'border-blue-500',
+      messaging: 'border-red-500',
+      analytics: 'border-emerald-500',
+      security: 'border-amber-500',
+    };
+    return colors[categoryId] || 'border-gray-500';
+  }
+
   $: currentPhaseData = phases.find(p => p.id === currentPhase);
   $: rationaleData = getArchitecturalRationale(company.id, currentPhase);
 </script>
 
 <div class="max-w-7xl mx-auto">
   <!-- Game Header -->
-  <div class="flex items-center justify-between mb-6">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
     <div class="flex items-center space-x-4">
-      <button class="btn-secondary" on:click={handleBackToMenu}> ← Back to Menu </button>
+      <button class="btn-secondary text-sm" on:click={handleBackToMenu}> ← Back to Menu </button>
       <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center">
-          <span class="text-gray-200 font-semibold text-lg">{company.name.charAt(0)}</span>
+        <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gray-700 rounded-lg flex items-center justify-center">
+          <span class="text-gray-200 font-semibold text-sm sm:text-lg">{company.name.charAt(0)}</span>
         </div>
-        <div>
-          <h1 class="text-2xl font-bold">{company.name} Architecture Challenge</h1>
-          <p class="text-gray-400">{company.description}</p>
+        <div class="min-w-0 flex-1">
+          <h1 class="text-lg sm:text-2xl font-bold truncate">{company.name} Architecture Challenge</h1>
+          <p class="text-gray-400 text-sm hidden sm:block">{company.description}</p>
         </div>
       </div>
     </div>
 
-    <div class="text-right">
-      <div class="text-sm text-gray-400">Phase Score</div>
-      <div class="text-2xl font-bold text-gray-100">{score}</div>
+    <div class="text-right sm:text-right">
+      <div class="text-sm text-gray-400">Score</div>
+      <div class="text-xl sm:text-2xl font-bold text-gray-100">{score}</div>
     </div>
   </div>
 
@@ -202,7 +228,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
     <!-- Component Palette (Left Sidebar) -->
     <div class="lg:col-span-1">
-      <ComponentPalette on:componentSelect={handleComponentSelect} />
+      <ComponentPalette bind:selectedComponents on:componentSelect={handleComponentSelect} />
     </div>
 
     <!-- Phase Area (Main Content) - Merged from PhaseArea.svelte -->
@@ -238,7 +264,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {#each selectedComponents as componentId}
               {#if componentData[componentId]}
-                <div class="component-chip bg-blue-600 text-white border-blue-400">
+                <div class="component-chip selected bg-gray-600 text-white {getCategoryColorForSelected(componentData[componentId].category)}">
                   <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
                       <span class="text-sm">{componentData[componentId].name}</span>
@@ -348,6 +374,29 @@
                       {/each}
                     </ul>
                   </div>
+
+                  {#if rationaleData.architectureLinks}
+                    <div>
+                      <h6 class="font-medium text-green-200 mb-2">
+                        Real Company Architecture:
+                      </h6>
+                      <ul class="space-y-1 ml-4">
+                        {#each rationaleData.architectureLinks as link}
+                          <li class="flex items-start">
+                            <span class="text-green-400 mr-2 mt-1">🔗</span>
+                            <a 
+                              href={link.url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              class="text-green-300 hover:text-green-200 underline"
+                            >
+                              {link.title}
+                            </a>
+                          </li>
+                        {/each}
+                      </ul>
+                    </div>
+                  {/if}
                 </div>
               {/if}
             </div>
