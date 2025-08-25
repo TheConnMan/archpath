@@ -1,12 +1,17 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import ComponentPalette from './ComponentPalette.svelte';
-  import { componentData } from './componentData.js';
+  import { componentData, getFlavoredComponentName, flavorOptions } from './componentData.js';
+  import { currentFlavor } from './flavorStore.js';
   import {
     calculatePhaseScore,
     getPhaseDescription,
     getArchitecturalRationale,
   } from './gameData.js';
+
+  // Subscribe to flavor changes
+  let flavor = 'generic';
+  currentFlavor.subscribe(f => flavor = f);
 
   export let company;
   export let currentPhase;
@@ -25,6 +30,7 @@
   let phaseComplete = false;
   let lastPhaseResult = null;
   let showArchitecturalRationale = false;
+  let showFlavorSelector = false;
 
   // Restore progress from localStorage on component load
   function loadProgress() {
@@ -150,6 +156,24 @@
     showArchitecturalRationale = !showArchitecturalRationale;
   }
 
+  function toggleFlavorSelector() {
+    showFlavorSelector = !showFlavorSelector;
+  }
+
+  function selectFlavor(flavorId) {
+    currentFlavor.set(flavorId);
+    showFlavorSelector = false;
+  }
+
+  function closeFlavorSelector() {
+    showFlavorSelector = false;
+  }
+
+  function getCurrentFlavorName() {
+    const flavorOption = flavorOptions.find(f => f.id === flavor);
+    return flavorOption ? flavorOption.name : 'Generic';
+  }
+
   function getCategoryColorForSelected(categoryId) {
     const colors = {
       compute: 'border-orange-500',
@@ -183,9 +207,45 @@
       </div>
     </div>
 
-    <div class="text-right sm:text-right">
-      <div class="text-sm text-gray-400">Phase Score</div>
-      <div class="text-xl sm:text-2xl font-bold text-gray-100">{score}</div>
+    <div class="flex items-center space-x-4">
+      <!-- Flavor Toggle Button -->
+      <div class="relative">
+        <button 
+          class="btn-secondary text-sm flex items-center space-x-2"
+          on:click={toggleFlavorSelector}
+          title="Change technology stack"
+        >
+          <span>⚙️</span>
+          <span class="hidden sm:inline">{getCurrentFlavorName()}</span>
+        </button>
+        
+        <!-- Flavor Dropdown -->
+        {#if showFlavorSelector}
+          <!-- Click outside overlay -->
+          <div class="fixed inset-0 z-40" on:click={closeFlavorSelector} on:keydown={closeFlavorSelector} role="button" tabindex="-1"></div>
+          <div class="absolute right-0 top-full mt-2 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-50 min-w-48">
+            <div class="p-2">
+              <div class="text-sm font-medium text-gray-300 mb-2">Technology Stack:</div>
+              {#each flavorOptions as option}
+                <button 
+                  class="w-full text-left px-3 py-2 rounded-md text-sm transition-colors hover:bg-gray-700 flex items-center justify-between {flavor === option.id ? 'bg-gray-700 text-white' : 'text-gray-300'}"
+                  on:click={() => selectFlavor(option.id)}
+                >
+                  <span>{option.name}</span>
+                  {#if flavor === option.id}
+                    <span class="text-green-400">✓</span>
+                  {/if}
+                </button>
+              {/each}
+            </div>
+          </div>
+        {/if}
+      </div>
+
+      <div class="text-right">
+        <div class="text-sm text-gray-400">Phase Score</div>
+        <div class="text-xl sm:text-2xl font-bold text-gray-100">{score}</div>
+      </div>
     </div>
   </div>
 
@@ -271,7 +331,7 @@
                 <div class="component-chip selected bg-gray-600 text-white {getCategoryColorForSelected(componentData[componentId].category)}">
                   <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-2">
-                      <span class="text-sm">{componentData[componentId].name}</span>
+                      <span class="text-sm">{getFlavoredComponentName(componentId, flavor)}</span>
                     </div>
                     <button
                       class="ml-2 hover:bg-red-500 rounded p-1 transition-colors"

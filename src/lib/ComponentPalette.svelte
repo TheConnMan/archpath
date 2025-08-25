@@ -1,10 +1,15 @@
 <script>
   import { createEventDispatcher } from 'svelte';
-  import { components, categories } from './componentData.js';
+  import { components, categories, getFlavoredComponentName, getComponentEquivalents } from './componentData.js';
+  import { currentFlavor } from './flavorStore.js';
 
   const dispatch = createEventDispatcher();
   
   export let selectedComponents = [];
+
+  // Subscribe to flavor changes
+  let flavor = 'generic';
+  currentFlavor.subscribe(f => flavor = f);
 
   let selectedCategory = 'all';
 
@@ -29,14 +34,33 @@
     return colors[categoryId] || 'border-gray-500 text-gray-400';
   }
 
-  $: isSelected = (componentId) => {
-    return selectedComponents.includes(componentId);
-  };
-
   $: filteredComponents =
     selectedCategory === 'all'
       ? components
       : components.filter(c => c.category === selectedCategory);
+
+  function isSelected(componentId) {
+    return selectedComponents.includes(componentId);
+  }
+
+  // Get enhanced tooltip with flavor equivalents
+  function getEnhancedTooltip(component) {
+    const originalTooltip = component.tooltip;
+    const equivalents = getComponentEquivalents(component.id);
+    
+    if (Object.keys(equivalents).length === 0) {
+      return originalTooltip;
+    }
+    
+    const equivalentsList = Object.entries(equivalents)
+      .map(([flavorKey, name]) => {
+        const flavorName = flavorKey === 'aws' ? 'AWS' : flavorKey === 'gcp' ? 'GCP' : 'Open Source';
+        return `${flavorName}: ${name}`;
+      })
+      .join(' | ');
+    
+    return `${originalTooltip}\n\nEquivalents: ${equivalentsList}`;
+  }
 </script>
 
 <div class="card">
@@ -63,10 +87,10 @@
       <button
         class="component-chip text-left {getCategoryColor(component.category)} {isSelected(component.id) ? 'selected bg-gray-600 border-current border-2' : ''}"
         on:click={() => selectComponent(component)}
-        title={component.tooltip}
+        title={getEnhancedTooltip(component)}
       >
         <div class="flex items-center justify-between">
-          <span class="font-medium">{component.name}</span>
+          <span class="font-medium">{getFlavoredComponentName(component.id, flavor)}</span>
           {#if isSelected(component.id)}
             <div class="text-green-400 font-bold">✓</div>
           {:else}

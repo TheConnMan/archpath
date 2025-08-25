@@ -1,8 +1,19 @@
 import { test, expect } from '@playwright/test';
 
+// Helper function to skip flavor selection and go to company selection
+async function skipToCompanySelection(page) {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  // Select any flavor to proceed to company selection
+  const awsButton = page.getByRole('button').filter({ hasText: 'Amazon Web Services' }).first();
+  if (await awsButton.isVisible()) {
+    await awsButton.click();
+  }
+}
+
 test.describe('Component Palette', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await skipToCompanySelection(page);
     await page.getByRole('button', { name: /Netflix/ }).click();
   });
 

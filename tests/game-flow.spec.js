@@ -1,8 +1,19 @@
 import { test, expect } from '@playwright/test';
 
+// Helper function to skip flavor selection and go to company selection
+async function skipToCompanySelection(page) {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  // Select any flavor to proceed to company selection
+  const awsButton = page.getByRole('button').filter({ hasText: 'Amazon Web Services' }).first();
+  if (await awsButton.isVisible()) {
+    await awsButton.click();
+  }
+}
+
 test.describe('ArchPath Game Flow', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await skipToCompanySelection(page);
   });
 
   test('displays main menu with all companies', async ({ page }) => {
@@ -38,10 +49,10 @@ test.describe('ArchPath Game Flow', () => {
     // Check initial score is 0 by looking for the score display area specifically
     await expect(page.locator('.text-right').getByText('0')).toBeVisible();
 
-    // Select required MVP components from the component palette
-    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' }).click();
-    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Database' }).click();
-    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Auth Service' }).click();
+    // Select required MVP components from the component palette (using AWS names)
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'EC2' }).click();
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'RDS' }).click();
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Cognito' }).click();
 
     // Verify components are selected
     await expect(page.getByText('Your Architecture (3 components)')).toBeVisible();
@@ -76,8 +87,8 @@ test.describe('ArchPath Game Flow', () => {
   test('component selection and removal works correctly', async ({ page }) => {
     await page.getByRole('button', { name: /Slack/ }).click();
 
-    // Select a component from the palette
-    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'Web Server' }).click();
+    // Select a component from the palette (using AWS name)
+    await page.locator('.grid.grid-cols-1.gap-2').getByRole('button', { name: 'EC2' }).click();
     await expect(page.getByText('Your Architecture (1 components)')).toBeVisible();
 
     // Remove the component

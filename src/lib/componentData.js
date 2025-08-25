@@ -155,6 +155,132 @@ export const componentData = components.reduce((acc, component) => {
   return acc;
 }, {});
 
+// Technology flavor mappings
+export const technologyFlavors = {
+  compute: {
+    aws: ['EC2', 'ECS', 'Lambda'],
+    gcp: ['Compute Engine', 'Cloud Run', 'Cloud Functions'],
+    oss: ['Docker', 'Kubernetes', 'Node.js']
+  },
+  database: {
+    aws: ['RDS', 'DynamoDB', 'ElastiCache'],
+    gcp: ['CloudSQL', 'Firestore', 'BigQuery'],
+    oss: ['PostgreSQL', 'MongoDB', 'Redis']
+  },
+  storage: {
+    aws: ['S3', 'CloudFront', 'EFS'],
+    gcp: ['Cloud Storage', 'Cloud CDN', 'Filestore'],
+    oss: ['MinIO', 'nginx', 'GlusterFS']
+  },
+  network: {
+    aws: ['ALB/NLB', 'API Gateway', 'Route 53'],
+    gcp: ['Load Balancer', 'API Gateway', 'Cloud DNS'],
+    oss: ['nginx', 'Kong', 'BIND']
+  },
+  messaging: {
+    aws: ['SQS/SNS', 'Kinesis', 'EventBridge'],
+    gcp: ['Pub/Sub', 'Cloud Tasks', 'Eventarc'],
+    oss: ['Kafka', 'Redis', 'RabbitMQ']
+  },
+  analytics: {
+    aws: ['CloudWatch', 'X-Ray', 'QuickSight'],
+    gcp: ['Cloud Monitoring', 'Cloud Logging', 'BigQuery'],
+    oss: ['Prometheus', 'ELK Stack', 'Grafana']
+  },
+  security: {
+    aws: ['Cognito', 'WAF', 'KMS'],
+    gcp: ['Identity Platform', 'Cloud Armor', 'KMS'],
+    oss: ['Auth0', 'fail2ban', 'Let\'s Encrypt']
+  }
+};
+
+// Component flavor mappings - maps each component ID to its flavor category and index
+export const componentFlavorMap = {
+  'web-server': { category: 'compute', index: 0 },
+  'app-server': { category: 'compute', index: 1 },
+  'lambda': { category: 'compute', index: 2 },
+  'database': { category: 'database', index: 0 },
+  'cache': { category: 'database', index: 2 },
+  'search-engine': { category: 'database', index: 1 },
+  'file-storage': { category: 'storage', index: 0 },
+  'cdn': { category: 'storage', index: 1 },
+  'object-storage': { category: 'storage', index: 0 },
+  'load-balancer': { category: 'network', index: 0 },
+  'api-gateway': { category: 'network', index: 1 },
+  'dns': { category: 'network', index: 2 },
+  'message-queue': { category: 'messaging', index: 0 },
+  'websockets': { category: 'messaging', index: 1 },
+  'event-streaming': { category: 'messaging', index: 2 },
+  'monitoring': { category: 'analytics', index: 0 },
+  'logging': { category: 'analytics', index: 1 },
+  'analytics': { category: 'analytics', index: 2 },
+  'auth-service': { category: 'security', index: 0 },
+  'firewall': { category: 'security', index: 1 },
+  'encryption': { category: 'security', index: 2 }
+};
+
+// Function to get flavored component name
+export function getFlavoredComponentName(componentId, flavor = 'generic') {
+  if (flavor === 'generic') {
+    return componentData[componentId]?.name || componentId;
+  }
+  
+  const mapping = componentFlavorMap[componentId];
+  if (!mapping) return componentData[componentId]?.name || componentId;
+  
+  const flavorNames = technologyFlavors[mapping.category]?.[flavor];
+  if (!flavorNames || !flavorNames[mapping.index]) {
+    return componentData[componentId]?.name || componentId;
+  }
+  
+  return flavorNames[mapping.index];
+}
+
+// Function to get component equivalents across all flavors
+export function getComponentEquivalents(componentId) {
+  const mapping = componentFlavorMap[componentId];
+  if (!mapping) return {};
+  
+  const equivalents = {};
+  const categoryFlavors = technologyFlavors[mapping.category];
+  
+  if (categoryFlavors) {
+    Object.keys(categoryFlavors).forEach(flavor => {
+      const flavorName = categoryFlavors[flavor][mapping.index];
+      if (flavorName) {
+        equivalents[flavor] = flavorName;
+      }
+    });
+  }
+  
+  return equivalents;
+}
+
+// Available flavor options
+export const flavorOptions = [
+  {
+    id: 'aws',
+    name: 'Amazon Web Services',
+    description: 'Cloud services from Amazon',
+    icon: '☁️',
+    examples: ['EC2', 'RDS', 'S3', 'Lambda']
+  },
+  {
+    id: 'gcp',
+    name: 'Google Cloud Platform',
+    description: 'Google\'s cloud infrastructure',
+    icon: '🌐',
+    examples: ['Compute Engine', 'CloudSQL', 'Cloud Storage', 'Cloud Functions']
+  },
+  {
+    id: 'oss',
+    name: 'Open Source',
+    description: 'Open source technologies',
+    icon: '⚡',
+    examples: ['Docker', 'PostgreSQL', 'MinIO', 'Kafka']
+  }
+];
+
 // Category definitions
 export const categories = [
   { id: 'all', name: 'All', components: [] },
